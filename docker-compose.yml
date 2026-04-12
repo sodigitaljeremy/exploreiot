@@ -17,6 +17,7 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+      start_period: 10s
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -102,7 +103,6 @@ services:
 
   subscriber:
     build: ./backend
-    entrypoint: [""]
     command: ["python", "subscriber.py"]
     volumes:
       - ./shared:/shared:ro
@@ -133,7 +133,6 @@ services:
   publisher:
     build: ./backend
     profiles: ["demo"]
-    entrypoint: [""]
     command: ["python", "publisher.py"]
     volumes:
       - ./shared:/shared:ro

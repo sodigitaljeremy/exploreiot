@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# Wait for PostgreSQL to be ready (max 30 seconds)
+# Wait for PostgreSQL and run migrations (only if DB_HOST is set)
 if [ -n "$DB_HOST" ]; then
     echo "Waiting for PostgreSQL at $DB_HOST:${DB_PORT:-5432}..."
     timeout=30
@@ -15,11 +15,12 @@ if [ -n "$DB_HOST" ]; then
         sleep 1
     done
     echo "PostgreSQL is ready."
-fi
 
-# Run Alembic migrations before starting the application
-echo "Running database migrations..."
-alembic upgrade head
+    echo "Running database migrations..."
+    alembic upgrade head
+else
+    echo "No DB_HOST set, skipping database wait and migrations."
+fi
 
 # Execute the original command
 exec "$@"
