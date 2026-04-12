@@ -199,6 +199,6 @@ L'application applique des validations strictes pour les identifiants en startup
 
 Exemple d'erreur si `MQTT_USER=mqtt_user` mais `MQTT_PASSWORD` est vide :
 
-```
+```text
 RuntimeError: MQTT_USER specified but MQTT_PASSWORD is empty
 ```

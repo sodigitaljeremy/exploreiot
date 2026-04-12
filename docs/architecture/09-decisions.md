@@ -202,4 +202,3 @@ services:
 - Nécessite une documentation claire pour que les utilisateurs comprennent les deux modes et comment les activiser.
 - Si à l'avenir on souhaite lancer une variante "simulation + Chirpstack côte à côte" (par exemple pour comparer), il faudrait revoir cette architecture.
 - Les variables d'environnement ne sont pas isolées par profil — il faut faire attention à ne pas accéder à des services du profil Chirpstack en mode simulation.
-

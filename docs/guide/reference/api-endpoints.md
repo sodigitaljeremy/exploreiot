@@ -312,7 +312,7 @@ Le serveur envoie plusieurs types de messages :
 }
 ```
 
-2. `pong` — réponse au keepalive du client :
+1. `pong` — réponse au keepalive du client :
 
 ```json
 {
@@ -320,7 +320,7 @@ Le serveur envoie plusieurs types de messages :
 }
 ```
 
-3. `debug_mqtt` — messages de debug MQTT (si l'inspecteur est actif) :
+1. `debug_mqtt` — messages de debug MQTT (si l'inspecteur est actif) :
 
 ```json
 {

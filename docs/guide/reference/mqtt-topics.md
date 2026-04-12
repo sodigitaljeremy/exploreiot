@@ -199,4 +199,3 @@ Exemples :
 - `a1b2c3d4e5f60001`
 - `0016c001f1500812`
 - `deadbeefcafe0042`
-

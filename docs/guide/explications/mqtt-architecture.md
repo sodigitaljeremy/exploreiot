@@ -145,4 +145,3 @@ Le subscriber écrit périodiquement un fichier `/tmp/subscriber_alive` avec le 
 HEALTHCHECK --interval=15s --timeout=5s --retries=3 \
   CMD test $(( $(date +%s) - $(date +%s -r /tmp/subscriber_alive) )) -lt 30
 ```
-

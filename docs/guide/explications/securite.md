@@ -242,4 +242,3 @@ ExploreIOT suppose un environnement de **confiance relative** :
 - Les dépassements de rate limit sont enregistrés
 - Les erreurs de validation MQTT sont enregistrées
 - Tous les logs doivent être conservés pour audit
-

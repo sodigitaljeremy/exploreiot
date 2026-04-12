@@ -12,26 +12,32 @@ Ce journal documente les apprentissages clés réalisés pendant le développeme
 
 Pour une progression logique, suivez cet ordre de lecture :
 
-### 🔬 Fondamentaux IoT
+### Fondamentaux IoT
+
 1. [Encodage LoRaWAN](lorawan-encoding.md) — Comment encoder des mesures capteur en binaire
-2. [Patterns MQTT](mqtt-patterns.md) — Communication pub/sub entre les composants
+1. [Patterns MQTT](mqtt-patterns.md) — Communication pub/sub entre les composants
 
-### 🔒 Sécurité
-3. [Attaques timing](timing-attacks.md) — Protéger les secrets contre l'analyse temporelle
+### Sécurité
 
-### 🗄️ Données
-4. [Connection pooling](connection-pooling.md) — Gérer efficacement les connexions PostgreSQL
-5. [Stratégie migrations](migrations-strategy.md) — Versionner le schéma de base de données
+1. [Attaques timing](timing-attacks.md) — Protéger les secrets contre l'analyse temporelle
 
-### 🌐 Temps réel
-6. [WebSocket reconnection](websocket-reconnection.md) — Maintenir la connexion dashboard-API
+### Données
 
-### 🏗️ Infrastructure & Architecture
-7. [Docker multi-stage](docker-multistage.md) — Optimiser les images de production
-8. [Principes SOLID](solid-principles.md) — Structurer le code backend proprement
+1. [Connection pooling](connection-pooling.md) — Gérer efficacement les connexions PostgreSQL
+1. [Stratégie migrations](migrations-strategy.md) — Versionner le schéma de base de données
 
-### 🔗 Intégration
-9. [Intégration Chirpstack](chirpstack-integration.md) — Connecter un vrai serveur LoRaWAN
+### Temps réel
+
+1. [WebSocket reconnection](websocket-reconnection.md) — Maintenir la connexion dashboard-API
+
+### Infrastructure & Architecture
+
+1. [Docker multi-stage](docker-multistage.md) — Optimiser les images de production
+1. [Principes SOLID](solid-principles.md) — Structurer le code backend proprement
+
+### Intégration
+
+1. [Intégration Chirpstack](chirpstack-integration.md) — Connecter un vrai serveur LoRaWAN
 
 ## Fiches
 

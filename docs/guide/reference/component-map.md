@@ -168,7 +168,9 @@ app/page.tsx
 ## Optimisation React 19
 
 ### Dashboard.tsx
+
 Utilise `queueMicrotask` pour l'effet flash afin de respecter les contraintes d'impureté des fonctions de rendu React 19 — évite les setState dans le render principal.
 
 ### pipeline-context.tsx
+
 Utilise `queueMicrotask` pour les mises à jour d'état différées (deferred setState) dans le contexte Pipeline, assurant la stabilité du rendu et l'absence de warnings React 19.

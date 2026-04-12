@@ -77,7 +77,7 @@ Fournisseurs recommandés :
 
 Dans le panneau de gestion DNS de votre registrar, ajoutez ces enregistrements **A** pointant vers l'IP de votre VPS :
 
-```
+```text
 Type    Nom        Valeur           TTL
 ─────────────────────────────────────────
 A       @          65.109.xxx.xxx   3600
@@ -262,8 +262,8 @@ Coolify rebuild les images et redéploie automatiquement.
 
 | Service | URL locale | URL production |
 |---------|-----------|----------------|
-| Dashboard | http://localhost:3000 | https://votre-domaine.fr |
-| API Swagger | http://localhost:8000/docs | https://api.votre-domaine.fr/docs |
-| Documentation | http://localhost:8081 | https://docs.votre-domaine.fr |
-| pgAdmin | http://localhost:5050 | https://pgadmin.votre-domaine.fr |
-| Coolify | — | http://IP_VPS:8000 |
+| Dashboard | <http://localhost:3000> | <https://votre-domaine.fr> |
+| API Swagger | <http://localhost:8000/docs> | <https://api.votre-domaine.fr/docs> |
+| Documentation | <http://localhost:8081> | <https://docs.votre-domaine.fr> |
+| pgAdmin | <http://localhost:5050> | <https://pgadmin.votre-domaine.fr> |
+| Coolify | — | <http://IP_VPS:8000> |
