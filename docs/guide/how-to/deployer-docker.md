@@ -74,7 +74,7 @@ api  | Migrations complete. Starting API server...
 Une fois les services démarrés, vérifiez que l'API répond correctement :
 
 ```bash
-curl -s http://localhost:8000/health | python3 -m json.tool
+curl -s http://localhost:8002/health | python3 -m json.tool
 ```
 
 Réponse attendue :

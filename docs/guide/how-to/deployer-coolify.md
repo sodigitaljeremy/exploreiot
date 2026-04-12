@@ -263,7 +263,7 @@ Coolify rebuild les images et redéploie automatiquement.
 | Service | URL locale | URL production |
 |---------|-----------|----------------|
 | Dashboard | <http://localhost:3000> | <https://votre-domaine.fr> |
-| API Swagger | <http://localhost:8000/docs> | <https://api.votre-domaine.fr/docs> |
+| API Swagger | <http://localhost:8002/docs> | <https://api.votre-domaine.fr/docs> |
 | Documentation | <http://localhost:8081> | <https://docs.votre-domaine.fr> |
-| pgAdmin | <http://localhost:5050> | <https://pgadmin.votre-domaine.fr> |
+| pgAdmin | <http://localhost:5051> | <https://pgadmin.votre-domaine.fr> |
 | Coolify | — | <http://IP_VPS:8000> |
