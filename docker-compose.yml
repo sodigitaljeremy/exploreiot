@@ -102,7 +102,7 @@ services:
 
   subscriber:
     build: ./backend
-    entrypoint: []
+    entrypoint: [""]
     command: ["python", "subscriber.py"]
     volumes:
       - ./shared:/shared:ro
@@ -133,7 +133,7 @@ services:
   publisher:
     build: ./backend
     profiles: ["demo"]
-    entrypoint: []
+    entrypoint: [""]
     command: ["python", "publisher.py"]
     volumes:
       - ./shared:/shared:ro
