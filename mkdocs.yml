@@ -78,6 +78,7 @@ nav:
       - Sauvegarder la base: guide/how-to/sauvegarder-restaurer-db.md
       - Configurer MQTT TLS: guide/how-to/configurer-mqtt-tls.md
       - CI/CD GitHub Actions: guide/how-to/ci-cd-github-actions.md
+      - Déployer sur VPS (Coolify): guide/how-to/deployer-coolify.md
     - Référence:
       - API endpoints: guide/reference/api-endpoints.md
       - Variables d'environnement: guide/reference/env-variables.md

@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "ExploreIOT",
+      "Group": "Servers",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "exploreiot",
+      "Username": "exploreiot",
+      "SSLMode": "prefer"
+    }
+  }
+}
