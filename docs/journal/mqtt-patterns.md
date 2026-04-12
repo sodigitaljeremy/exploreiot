@@ -165,3 +165,8 @@ Depuis paho-mqtt 2.0, ne pas specifier `CallbackAPIVersion` declenche un `Deprec
 - [paho-mqtt — documentation Python](https://eclipse.dev/paho/files/paho.mqtt.python/html/index.html)
 - [HiveMQ MQTT Essentials (serie d'articles)](https://www.hivemq.com/mqtt-essentials/)
 - [Mosquitto — broker MQTT open source](https://mosquitto.org/documentation/)
+
+!!! tip "Pour aller plus loin"
+    - [Memo 05 — Réseaux fondamentaux](../memos/05-reseaux-fondamentaux.md) : TCP/IP, ports, MQTT
+    - [Explication — Architecture MQTT](../guide/explications/mqtt-architecture.md) : Topologie pub/sub ExploreIOT
+    - [Référence — Topics MQTT](../guide/reference/mqtt-topics.md) : Format des messages et topics

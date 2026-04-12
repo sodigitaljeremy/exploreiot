@@ -27,17 +27,46 @@ ExploreIOT Dashboard s'inscrit dans un réseau IoT LoRaWAN standard. Le système
 ## 3.2 Diagramme de contexte C4
 
 ```mermaid
-graph LR
-    C[Capteurs<br/>Dragino LHT65] -->|LoRaWAN| GW[Gateway<br/>LoRaWAN]
-    GW -->|MQTT| CS[Chirpstack v4<br/>réel ou simulé]
-    CS -->|MQTT publish| MQTT[Mosquitto<br/>Broker MQTT]
-    MQTT -->|Subscribe| SUB[Subscriber<br/>Worker Python]
-    SUB -->|INSERT| DB[(PostgreSQL)]
-    DB -->|SELECT| API[FastAPI<br/>API REST]
-    API -->|WebSocket| WEB[Dashboard<br/>Next.js]
-    API -->|REST JSON| WEB
-    TECH[Technicien IoT] -->|HTTP/WS| WEB
+graph TB
+    TECH["👤 Technicien IoT<br/><i>Surveille les capteurs<br/>via le navigateur web</i>"]
+    ETUD["👤 Étudiant<br/><i>Explore le pipeline LoRaWAN<br/>via le convertisseur</i>"]
+
+    subgraph ExploreIOT["ExploreIOT Dashboard"]
+        SYS["📊 Système ExploreIOT<br/><i>Dashboard de supervision IoT<br/>Pipeline LoRaWAN complet</i>"]
+    end
+
+    CAPTEURS["📡 Capteurs Dragino LHT65<br/><i>Température + Humidité<br/>LoRaWAN 868 MHz</i>"]
+    GW["📶 Gateway LoRaWAN<br/><i>Pont radio LoRa → IP</i>"]
+    CS["⚙️ Chirpstack v4<br/><i>Serveur réseau LoRaWAN<br/>(réel ou simulé)</i>"]
+
+    TECH -->|"HTTP / WebSocket"| SYS
+    ETUD -->|"HTTP"| SYS
+    CAPTEURS -->|"LoRaWAN radio"| GW
+    GW -->|"MQTT / UDP"| CS
+    CS -->|"MQTT publish<br/>JSON + base64"| SYS
+
+    style SYS fill:#1168bd,color:#fff,stroke:#0b4884
+    style TECH fill:#08427b,color:#fff
+    style ETUD fill:#08427b,color:#fff
+    style CAPTEURS fill:#999,color:#fff
+    style GW fill:#999,color:#fff
+    style CS fill:#999,color:#fff
 ```
+
+### Acteurs
+
+| Acteur | Rôle |
+|--------|------|
+| **Technicien IoT** | Utilisateur principal — surveille le parc de capteurs, configure les alertes, exporte les données |
+| **Étudiant** | Utilisateur pédagogique — explore le convertisseur LoRaWAN pour comprendre l'encodage binaire |
+
+### Systèmes externes
+
+| Système | Description |
+|---------|-------------|
+| **Capteurs Dragino LHT65** | Capteurs physiques LoRaWAN (simulés par `publisher.py` en développement) |
+| **Gateway LoRaWAN** | Pont radio-IP (simulé par `publisher.py` en développement) |
+| **Chirpstack v4** | Serveur réseau LoRaWAN — disponible en mode réel via `docker compose --profile chirpstack up` |
 
 ---
 
@@ -159,3 +188,51 @@ Le système ne prend pas en charge :
 - La configuration des gateways physiques
 - L'envoi de commandes vers les capteurs (downlink)
 - L'authentification multi-utilisateurs (un seul niveau d'accès par clé API)
+
+---
+
+## 3.6 Modèle Conceptuel de Données (MERISE MCD)
+
+Le MCD représente les entités du domaine et leurs associations, indépendamment de toute implémentation technique.
+
+```mermaid
+erDiagram
+    CAPTEUR ||--o{ MESURE : "produit"
+    CAPTEUR {
+        string device_eui PK "Identifiant unique EUI-64"
+        string nom "Nom convivial"
+        string type_capteur "Dragino LHT65"
+        string localisation "Emplacement physique"
+    }
+    MESURE {
+        int id PK "Identifiant auto"
+        float temperature "Valeur en °C"
+        float humidite "Valeur en %"
+        datetime recu_le "Horodatage reception"
+    }
+    CAPTEUR ||--o{ ALERTE : "declenche"
+    ALERTE {
+        string type "TEMPERATURE_ELEVEE ou CAPTEUR_SILENCIEUX"
+        float valeur "Valeur depassant le seuil"
+        string message "Description lisible"
+        datetime recu_le "Horodatage detection"
+    }
+```
+
+### Entités
+
+| Entité | Description | Identifiant |
+|--------|-------------|-------------|
+| **CAPTEUR** | Appareil physique IoT LoRaWAN (Dragino LHT65) | `device_eui` (EUI-64, 16 hex) |
+| **MESURE** | Relevé de température et humidité à un instant T | `id` (auto-incrémenté) |
+| **ALERTE** | Anomalie détectée par analyse des mesures | Composite (`device_eui`, `recu_le`) |
+
+### Associations
+
+| Association | Cardinalité | Description |
+|-------------|-------------|-------------|
+| CAPTEUR — MESURE | 1,N | Un capteur produit 0 à N mesures |
+| CAPTEUR — ALERTE | 1,N | Un capteur déclenche 0 à N alertes |
+
+!!! note "Implémentation actuelle"
+    Dans l'implémentation actuelle, l'entité CAPTEUR n'a pas de table dédiée — les capteurs sont identifiés par leur `device_id` dans la table `mesures`. Les noms sont gérés côté frontend (`device-registry.ts`). Les alertes sont calculées dynamiquement à partir des mesures récentes (pas de table `alertes` persistante).

@@ -169,6 +169,17 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  # ─── Documentation MkDocs ──────────────────────────────────
+
+  docs:
+    image: squidfunk/mkdocs-material:9
+    ports:
+      - "127.0.0.1:8081:8000"
+    volumes:
+      - ./docs:/docs/docs
+      - ./mkdocs.yml:/docs/mkdocs.yml
+    restart: unless-stopped
+
   # ─── Frontend Next.js ──────────────────────────────────────
 
   web:

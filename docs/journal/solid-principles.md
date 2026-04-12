@@ -193,3 +193,6 @@ Quand `database.py` importe `config.py` et que `config.py` importe `database.py`
 - [FastAPI — Bigger Applications](https://fastapi.tiangolo.com/tutorial/bigger-applications/)
 - [Martin Fowler — Refactoring](https://refactoring.guru/fr/refactoring)
 - [SOLID Principles — Wikipedia](https://fr.wikipedia.org/wiki/SOLID_(informatique))
+
+!!! tip "Pour aller plus loin"
+    - [Architecture — Blocs fonctionnels](../architecture/05-blocs.md) : Structure modulaire du backend

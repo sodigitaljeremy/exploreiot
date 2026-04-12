@@ -313,3 +313,8 @@ print(f"Temp: {t/100}°C")
 5. **Hex** = plus lisible, moins compact (2 chars = 1 byte)
 6. **URL encoding** = escape caractères spéciaux (`%HH`)
 7. **ExploreIOT** : MQTT JSON → Base64 payload → struct.unpack
+
+!!! tip "Appliquer dans ExploreIOT"
+    - Le payload capteur transite en Base64 dans les messages JSON MQTT
+    - Le subscriber décode : `base64.b64decode(data)` → `struct.unpack('>HH', bytes)`
+    - Voir le [journal — Encodage LoRaWAN](../journal/lorawan-encoding.md) pour le pipeline complet

@@ -456,3 +456,8 @@ curl -X POST http://localhost:8000/api/mesures \
 # Browser DevTools
 # F12 → Network → Voir requêtes
 ```bash
+
+!!! tip "Appliquer dans ExploreIOT"
+    - Le frontend Next.js (client) consomme l'API FastAPI (serveur) via `fetch()`
+    - Les endpoints REST suivent les conventions RESTful (`GET /api/devices`, `GET /api/devices/:id/metrics`)
+    - Voir la [référence API](../guide/reference/api-endpoints.md) pour la liste complète des endpoints

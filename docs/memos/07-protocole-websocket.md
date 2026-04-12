@@ -472,3 +472,8 @@ ws.addEventListener('error', (event) => {
 # Browser DevTools
 # F12 → Network → Filter "ws" → Click /ws → Messages tab
 ```
+
+!!! tip "Appliquer dans ExploreIOT"
+    - Le endpoint `/ws` broadcaste les mesures MQTT en temps réel à tous les clients connectés
+    - L'authentification WebSocket utilise le pattern "first-message" (pas de query params)
+    - Voir le [journal — WebSocket reconnection](../journal/websocket-reconnection.md) pour le backoff exponentiel

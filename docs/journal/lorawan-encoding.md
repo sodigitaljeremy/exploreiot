@@ -116,3 +116,8 @@ struct.pack('>h', -500)  # -> b'\xfe\x0c'  ✓
 - [Specification LoRaWAN 1.0.4](https://lora-alliance.org/resource_hub/lorawan-104-specification-package/)
 - [Dragino LHT65 — User Manual et payload format](https://www.dragino.com/products/temperature-humidity-sensor/item/151-lht65.html)
 - [The Things Network — Payload Formatters](https://www.thethingsindustries.com/docs/integrations/payload-formatters/)
+
+!!! tip "Pour aller plus loin"
+    - [Memo 03 — Encodage](../memos/03-encodage.md) : ASCII, UTF-8, Base64, URL encoding
+    - [Memo 04 — Endianness](../memos/04-endianness.md) : Big-endian vs little-endian
+    - [Explication — Encodage binaire](../guide/explications/encodage-binaire.md) : Pipeline complet de conversion

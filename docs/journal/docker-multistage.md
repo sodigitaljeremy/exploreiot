@@ -202,3 +202,7 @@ Sans `.dockerignore`, `COPY . .` copie `node_modules/` (centaines de Mo), `.git/
 - [Docker — Dockerfile best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
 - [Next.js — Output: standalone](https://nextjs.org/docs/app/api-reference/next-config-js/output)
 - [Snyk — 10 Docker security best practices](https://snyk.io/blog/10-docker-image-security-best-practices/)
+
+!!! tip "Pour aller plus loin"
+    - [Architecture — Déploiement](../architecture/07-deploiement.md) : Vue déploiement Arc42 et infrastructure Docker
+    - [How-to — Déployer avec Docker](../guide/how-to/deployer-docker.md) : Guide de déploiement complet

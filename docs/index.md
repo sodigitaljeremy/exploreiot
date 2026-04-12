@@ -43,14 +43,14 @@ ExploreIOT est un dashboard de monitoring conçu pour superviser des capteurs Io
 
 - **[Architecture](architecture/01-introduction.md)** — Documentation Arc42 complète (11 sections)
 - **[Guide utilisateur](guide/tutoriels/demarrage-rapide.md)** — Tutoriels, how-to, référence, explications (Diataxis)
-- **[Mémos informatique](memos/index.md)** — Fiches de révision (systèmes de numération, encodage, réseaux, SQL)
-- **[Journal d'apprentissage](journal/index.md)** — Micro-learning et retours d'expérience
+- **[Cours fondamentaux](memos/index.md)** — Fiches de révision (systèmes de numération, encodage, réseaux, SQL)
+- **[Journal de bord](journal/index.md)** — Micro-learning et retours d'expérience
 
 ## Démarrage rapide
 
 ```bash
-git clone <repo-url>
-cd exploreiot-dashboard-ui
+git clone https://github.com/sodigitaljeremy/exploreiot
+cd exploreiot
 docker compose up --build
 ```
 

@@ -209,3 +209,6 @@ Si `reconnectDelay` n'est pas remis a sa valeur initiale apres une connexion reu
 - [RFC 6455 — The WebSocket Protocol](https://datatracker.ietf.org/doc/html/rfc6455)
 - [FastAPI — WebSockets](https://fastapi.tiangolo.com/advanced/websockets/)
 - [AWS — Exponential Backoff and Jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/)
+
+!!! tip "Pour aller plus loin"
+    - [Memo 07 — Protocole WebSocket](../memos/07-protocole-websocket.md) : Handshake, frames, reconnexion

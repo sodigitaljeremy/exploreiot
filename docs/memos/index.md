@@ -19,6 +19,40 @@ Chaque memo est aussi disponible en format slides (Marp) pour les presentations.
 | 07 | [Protocole WebSocket](07-protocole-websocket.md) | WebSocket, temps reel, polling | /ws broadcast, reconnexion backoff |
 | 08 | [SQL fondamentaux](08-sql-fondamentaux.md) | SELECT, INSERT, INDEX, transactions | Table mesures, 3 index, pool |
 
+## Parcours de progression
+
+Les memos suivent une progression logique, du plus fondamental au plus appliqué :
+
+```text
+┌─────────────┐    ┌─────────────────────┐    ┌──────────┐    ┌────────────┐
+│ 01 Numération│───▶│ 02 Représentation   │───▶│ 03 Encodage│───▶│ 04 Endianness│
+│   (bases)    │    │   (bits, octets)    │    │ (Base64)  │    │ (byte order)│
+└─────────────┘    └─────────────────────┘    └──────────┘    └────────────┘
+                                                                      │
+                   ┌─────────────────────┐    ┌──────────────┐        │
+                   │ 06 Client-Serveur   │◀───│ 05 Réseaux   │◀───────┘
+                   │   (REST, HTTP)      │    │ (TCP/IP,MQTT)│
+                   └─────────┬───────────┘    └──────────────┘
+                             │
+                   ┌─────────▼───────────┐    ┌──────────────┐
+                   │ 07 WebSocket        │───▶│ 08 SQL       │
+                   │ (temps réel)        │    │ (persistance)│
+                   └─────────────────────┘    └──────────────┘
+```
+
+## Liens avec le projet et le journal
+
+| Memo | Concept dans ExploreIOT | Article journal associé |
+|------|-------------------------|------------------------|
+| 01 — Numération | DevEUI en hexadécimal, payload binaire | [Encodage LoRaWAN](../journal/lorawan-encoding.md) |
+| 02 — Représentation | `struct.pack('>HH')` = 4 octets | [Encodage LoRaWAN](../journal/lorawan-encoding.md) |
+| 03 — Encodage | Payload Base64 dans JSON MQTT | [Encodage LoRaWAN](../journal/lorawan-encoding.md) |
+| 04 — Endianness | `>` = big-endian dans struct.pack | [Encodage LoRaWAN](../journal/lorawan-encoding.md) |
+| 05 — Réseaux | MQTT:1883, HTTP:8000, WS:8000/ws | [Patterns MQTT](../journal/mqtt-patterns.md) |
+| 06 — Client-Serveur | FastAPI endpoints, fetch() frontend | — |
+| 07 — WebSocket | /ws broadcast, reconnexion backoff | [WebSocket reconnection](../journal/websocket-reconnection.md) |
+| 08 — SQL | Table mesures, 3 index, pool | [Connection pooling](../journal/connection-pooling.md), [Stratégie migrations](../journal/migrations-strategy.md) |
+
 ---
 
 ## Generer les slides

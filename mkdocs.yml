@@ -65,26 +65,19 @@ nav:
     - Décisions: architecture/09-decisions.md
     - Risques: architecture/10-risques.md
     - Glossaire: architecture/11-glossaire.md
-    - Diagrammes:
-      - C4 Contexte: architecture/diagrams/c4-context.md
-      - C4 Conteneurs: architecture/diagrams/c4-container.md
-      - C4 Composants: architecture/diagrams/c4-component.md
-      - MERISE MCD: architecture/diagrams/merise-mcd.md
-      - MERISE MLD: architecture/diagrams/merise-mld.md
-      - MERISE MPD: architecture/diagrams/merise-mpd.md
-      - UML Classes Backend: architecture/diagrams/uml-class-backend.md
-      - UML Séquence MQTT: architecture/diagrams/uml-sequence-mqtt.md
-      - UML Séquence Dashboard: architecture/diagrams/uml-sequence-dashboard.md
-      - UML Activité Alertes: architecture/diagrams/uml-activity-alert.md
   - Guide utilisateur:
     - Tutoriels:
       - Démarrage rapide: guide/tutoriels/demarrage-rapide.md
+      - Explorer le pipeline IoT: guide/tutoriels/explorer-pipeline.md
+      - Utiliser le convertisseur: guide/tutoriels/utiliser-convertisseur.md
     - How-to:
       - Déployer avec Docker: guide/how-to/deployer-docker.md
       - Ajouter un capteur: guide/how-to/ajouter-capteur.md
       - Configurer les alertes: guide/how-to/configurer-alertes.md
       - Exporter les données: guide/how-to/exporter-donnees.md
-      - Troubleshooting: guide/how-to/troubleshooting.md
+      - Sauvegarder la base: guide/how-to/sauvegarder-restaurer-db.md
+      - Configurer MQTT TLS: guide/how-to/configurer-mqtt-tls.md
+      - CI/CD GitHub Actions: guide/how-to/ci-cd-github-actions.md
     - Référence:
       - API endpoints: guide/reference/api-endpoints.md
       - Variables d'environnement: guide/reference/env-variables.md
@@ -92,13 +85,15 @@ nav:
       - Schéma base de données: guide/reference/schema-db.md
       - Codec LoRaWAN: guide/reference/payload-codec.md
       - Carte des composants: guide/reference/component-map.md
+      - Troubleshooting: guide/reference/troubleshooting.md
+      - Audit logging: guide/reference/audit-logging.md
+      - Sécurité (référence): guide/reference/securite-reference.md
     - Explications:
       - Pipeline LoRaWAN: guide/explications/lorawan-pipeline.md
       - Sécurité: guide/explications/securite.md
       - Architecture MQTT: guide/explications/mqtt-architecture.md
       - Encodage binaire: guide/explications/encodage-binaire.md
-      - Audit logging: guide/explications/audit-logging.md
-  - Journal d'apprentissage:
+  - Journal de bord:
     - Vue d'ensemble: journal/index.md
     - Encodage LoRaWAN: journal/lorawan-encoding.md
     - Patterns MQTT: journal/mqtt-patterns.md
@@ -109,7 +104,7 @@ nav:
     - Principes SOLID: journal/solid-principles.md
     - Stratégie migrations: journal/migrations-strategy.md
     - Intégration Chirpstack: journal/chirpstack-integration.md
-  - Memos CS:
+  - Cours fondamentaux:
     - Vue d'ensemble: memos/index.md
     - Systèmes de numération: memos/01-systemes-numeration.md
     - Représentation des données: memos/02-representation-donnees.md

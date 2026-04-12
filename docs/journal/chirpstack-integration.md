@@ -318,3 +318,7 @@ La plupart des opérations gRPC (Create, Update, Delete) nécessitent un token A
 - [Docker Compose — Documentation des profils](https://docs.docker.com/compose/profiles/)
 - [Chirpstack gRPC API — Définition proto3](https://github.com/brocaar/chirpstack/tree/main/api)
 - [Mosquitto MQTT Broker — Configuration](https://mosquitto.org/man/mosquitto-conf-5.html)
+
+!!! tip "Pour aller plus loin"
+    - [Explication — Pipeline LoRaWAN](../guide/explications/lorawan-pipeline.md) : Le parcours complet d'une mesure
+    - [Architecture — Contexte](../architecture/03-contexte.md) : Diagramme C4 avec Chirpstack

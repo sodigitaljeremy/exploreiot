@@ -530,6 +530,11 @@ logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 # Maintenant voir TOUTES requêtes SQL générées
 ```sql
 
+!!! tip "Appliquer dans ExploreIOT"
+    - La table `mesures` stocke température + humidité avec 3 index (device_id, horodatage, anti-duplication)
+    - Le connection pool `SimpleConnectionPool` évite d'ouvrir/fermer des connexions à chaque requête
+    - Voir le [journal — Connection pooling](../journal/connection-pooling.md) et [Stratégie migrations](../journal/migrations-strategy.md)
+
 ---
 
 ## Query Optimization Example

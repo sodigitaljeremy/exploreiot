@@ -8,6 +8,31 @@ Ce journal documente les apprentissages clés réalisés pendant le développeme
 - Créer une référence personnelle réutilisable
 - Démontrer une démarche de progression continue
 
+## Parcours recommandé
+
+Pour une progression logique, suivez cet ordre de lecture :
+
+### 🔬 Fondamentaux IoT
+1. [Encodage LoRaWAN](lorawan-encoding.md) — Comment encoder des mesures capteur en binaire
+2. [Patterns MQTT](mqtt-patterns.md) — Communication pub/sub entre les composants
+
+### 🔒 Sécurité
+3. [Attaques timing](timing-attacks.md) — Protéger les secrets contre l'analyse temporelle
+
+### 🗄️ Données
+4. [Connection pooling](connection-pooling.md) — Gérer efficacement les connexions PostgreSQL
+5. [Stratégie migrations](migrations-strategy.md) — Versionner le schéma de base de données
+
+### 🌐 Temps réel
+6. [WebSocket reconnection](websocket-reconnection.md) — Maintenir la connexion dashboard-API
+
+### 🏗️ Infrastructure & Architecture
+7. [Docker multi-stage](docker-multistage.md) — Optimiser les images de production
+8. [Principes SOLID](solid-principles.md) — Structurer le code backend proprement
+
+### 🔗 Intégration
+9. [Intégration Chirpstack](chirpstack-integration.md) — Connecter un vrai serveur LoRaWAN
+
 ## Fiches
 
 | Fiche | Domaine | Concept clé |
@@ -21,6 +46,20 @@ Ce journal documente les apprentissages clés réalisés pendant le développeme
 | [Principes SOLID](solid-principles.md) | Architecture | Single Responsibility, refactoring |
 | [Stratégie migrations](migrations-strategy.md) | Base de données | Alembic, versioning schéma |
 | [Intégration Chirpstack](chirpstack-integration.md) | Infrastructure | Docker profiles, gRPC, Chirpstack v4 |
+
+## Liens avec le reste de la documentation
+
+| Fiche journal | Memos associés | Explications / Référence |
+|---------------|----------------|--------------------------|
+| Encodage LoRaWAN | [03 - Encodage](../memos/03-encodage.md), [04 - Endianness](../memos/04-endianness.md) | [Encodage binaire](../guide/explications/encodage-binaire.md) |
+| Patterns MQTT | [05 - Réseaux](../memos/05-reseaux-fondamentaux.md) | [Architecture MQTT](../guide/explications/mqtt-architecture.md), [Topics MQTT](../guide/reference/mqtt-topics.md) |
+| Attaques timing | — | [Sécurité](../guide/explications/securite.md) |
+| Connection pooling | [08 - SQL](../memos/08-sql-fondamentaux.md) | [Schéma DB](../guide/reference/schema-db.md) |
+| WebSocket reconnection | [07 - WebSocket](../memos/07-protocole-websocket.md) | — |
+| Docker multi-stage | — | [Déploiement Arc42](../architecture/07-deploiement.md) |
+| Principes SOLID | — | [Blocs fonctionnels Arc42](../architecture/05-blocs.md) |
+| Stratégie migrations | [08 - SQL](../memos/08-sql-fondamentaux.md) | [Schéma DB](../guide/reference/schema-db.md) |
+| Intégration Chirpstack | — | [Pipeline LoRaWAN](../guide/explications/lorawan-pipeline.md), [Contexte Arc42](../architecture/03-contexte.md) |
 
 ## Méthodologie
 

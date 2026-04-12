@@ -209,3 +209,7 @@ Une migration deja appliquee en production ne doit **jamais** etre modifiee. Ale
 - [Martin Fowler — Evolutionary Database Design](https://martinfowler.com/articles/evodb.html)
 - [Alembic — op.execute() pour SQL brut](https://alembic.sqlalchemy.org/en/latest/ops.html#alembic.operations.Operations.execute)
 - [Docker Compose — depends_on et conditions](https://docs.docker.com/compose/compose-file/05-services/#depends_on)
+
+!!! tip "Pour aller plus loin"
+    - [Memo 08 — SQL fondamentaux](../memos/08-sql-fondamentaux.md) : SELECT, INSERT, INDEX, transactions
+    - [Référence — Schéma DB](../guide/reference/schema-db.md) : DDL complet, volumétrie, requêtes principales

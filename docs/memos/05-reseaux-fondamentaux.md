@@ -307,3 +307,9 @@ tcpdump -i lo port 8000
 # Info interface réseau
 ip addr show
 ```bash
+
+!!! tip "Appliquer dans ExploreIOT"
+    - MQTT sur port 1883 (broker Mosquitto) pour les messages capteur
+    - HTTP sur port 8000 (FastAPI) pour l'API REST
+    - WebSocket sur port 8000/ws pour le temps réel
+    - Voir le [journal — Patterns MQTT](../journal/mqtt-patterns.md) pour l'architecture pub/sub

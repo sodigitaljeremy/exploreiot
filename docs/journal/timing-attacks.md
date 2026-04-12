@@ -136,3 +136,7 @@ Retourner des messages d'erreur differents selon que la cle est absente ou incor
 - [OWASP — Testing for Timing Attacks](https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/08-Test_HTTP_Strict_Transport_Security)
 - [Coda Hale — "A Lesson In Timing Attacks"](https://codahale.com/a-lesson-in-timing-attacks/)
 - [Wikipedia — Timing attack](https://en.wikipedia.org/wiki/Timing_attack)
+
+!!! tip "Pour aller plus loin"
+    - [Explication — Sécurité](../guide/explications/securite.md) : Modèle de sécurité complet d'ExploreIOT
+    - [Référence — Sécurité](../guide/reference/securite-reference.md) : Implémentation des mécanismes de protection

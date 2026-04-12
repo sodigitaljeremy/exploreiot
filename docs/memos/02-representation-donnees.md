@@ -288,3 +288,8 @@ print(f"Status: {status_unpacked}, Config: {config_unpacked}")
 5. **Overflow** = crashe ou wraparound silencieux
 6. **Big-endian** = ordre réseau LoRaWAN
 7. **Floats** = rares en IoT (bande limitée)
+
+!!! tip "Appliquer dans ExploreIOT"
+    - `struct.pack('>HH', temp, hum)` produit exactement 4 octets (2 × unsigned short)
+    - Chaque mesure capteur est encodée en mots de 16 bits (2 octets par valeur)
+    - Voir le [journal — Encodage LoRaWAN](../journal/lorawan-encoding.md) pour le code concret

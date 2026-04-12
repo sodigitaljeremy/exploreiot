@@ -92,6 +92,69 @@ graph TB
     PUB --> CODEC_W
 ```
 
+### 5.1.1 Vue Conteneurs C4 (Niveau 2)
+
+Le diagramme de conteneurs C4 détaille les 6 services déployés et leurs protocoles de communication.
+
+```mermaid
+graph TB
+    TECH["👤 Technicien IoT"]
+
+    subgraph Docker["Docker Compose"]
+        subgraph Frontend["Frontend"]
+            WEB["🌐 Next.js<br/><i>Dashboard React<br/>:3000</i>"]
+        end
+
+        subgraph BackendGroup["Backend Python"]
+            API["⚡ FastAPI<br/><i>API REST + WebSocket<br/>:8000</i>"]
+            SUB["📥 Subscriber<br/><i>MQTT → PostgreSQL<br/>Worker Python</i>"]
+            PUB["📤 Publisher<br/><i>Simulateur capteurs<br/>Worker Python</i>"]
+        end
+
+        subgraph Infra["Infrastructure"]
+            MQ["📨 Mosquitto<br/><i>Broker MQTT<br/>:1883</i>"]
+            PG["🗄️ PostgreSQL<br/><i>Base de données<br/>:5432</i>"]
+        end
+
+        subgraph ChirpstackProfile["Chirpstack (profil optionnel)"]
+            CS["⚙️ Chirpstack v4<br/><i>:8080</i>"]
+            REDIS["💾 Redis<br/><i>:6379</i>"]
+        end
+    end
+
+    TECH -->|"HTTP / WS"| WEB
+    WEB -->|"REST JSON<br/>WebSocket"| API
+    API -->|"SQL<br/>(psycopg2 pool)"| PG
+    SUB -->|"Subscribe<br/>QoS 1"| MQ
+    SUB -->|"INSERT"| PG
+    SUB -->|"asyncio bridge<br/>broadcast()"| API
+    PUB -->|"Publish<br/>QoS 1"| MQ
+    CS -->|"Publish"| MQ
+    CS -->|"Cache"| REDIS
+
+    style WEB fill:#000,color:#fff
+    style API fill:#009688,color:#fff
+    style SUB fill:#009688,color:#fff
+    style PUB fill:#009688,color:#fff
+    style MQ fill:#3C1053,color:#fff
+    style PG fill:#336791,color:#fff
+    style CS fill:#FF6B3E,color:#fff
+    style REDIS fill:#DC382D,color:#fff
+```
+
+#### Catalogue des conteneurs
+
+| Conteneur | Technologie | Port | Rôle |
+|-----------|-------------|------|------|
+| **Next.js** | React 19, TypeScript | 3000 | Dashboard temps réel + Convertisseur LoRaWAN |
+| **FastAPI** | Python, Uvicorn | 8000 | API REST, WebSocket, health check |
+| **Subscriber** | Python, paho-mqtt | — | Écoute MQTT, décode, insère en DB |
+| **Publisher** | Python, paho-mqtt | — | Simule capteurs Chirpstack v4 |
+| **Mosquitto** | Eclipse Mosquitto 2 | 1883 | Broker MQTT publish/subscribe |
+| **PostgreSQL** | PostgreSQL 15 | 5432 | Stockage mesures, alertes |
+| **Chirpstack** | Chirpstack v4 | 8080 | Serveur réseau LoRaWAN (optionnel) |
+| **Redis** | Redis 7 | 6379 | Cache Chirpstack (optionnel) |
+
 ---
 
 ## 5.2 Modules Frontend
@@ -205,6 +268,177 @@ def get_conn():
         pool.putconn(conn)
 ```
 
+### 5.3.1 Vue Composants C4 (Niveau 3 — FastAPI)
+
+La vue composants C4 détaille l'architecture interne du conteneur FastAPI.
+
+```mermaid
+graph TB
+    subgraph FastAPI["FastAPI (app/)"]
+        MAIN["main.py<br/><i>Entrypoint, lifespan,<br/>middleware, WS endpoint</i>"]
+
+        subgraph Middleware["Middleware"]
+            AUDIT["audit.py<br/><i>Log chaque requête</i>"]
+            CORS["CORSMiddleware<br/><i>Origins autorisés</i>"]
+            RATE["SlowAPIMiddleware<br/><i>Rate limiting</i>"]
+        end
+
+        subgraph Routes["Routes"]
+            HEALTH["health.py<br/><i>GET / , GET /health</i>"]
+            DEVICES["devices.py<br/><i>GET /devices<br/>GET /devices/{id}/metrics</i>"]
+            ALERTS["alerts.py<br/><i>GET /alerts</i>"]
+            STATS["stats.py<br/><i>GET /stats</i>"]
+        end
+
+        subgraph Core["Core"]
+            CONFIG["config.py<br/><i>Variables d'environnement</i>"]
+            DB["database.py<br/><i>Pool psycopg2<br/>get_conn()</i>"]
+            SEC["security.py<br/><i>verify_api_key()<br/>hmac timing-safe</i>"]
+            WS["websocket.py<br/><i>ConnectionManager<br/>broadcast()</i>"]
+            MQTT["mqtt_handler.py<br/><i>Client MQTT interne<br/>bridge asyncio</i>"]
+            CODEC["payload_codec.py<br/><i>Encode/decode<br/>LoRaWAN binaire</i>"]
+            LOG["logging_config.py<br/><i>Format structuré</i>"]
+            RL["rate_limit.py<br/><i>Limiter instance</i>"]
+        end
+    end
+
+    MAIN --> Routes
+    MAIN --> Middleware
+    MAIN --> WS
+    MAIN --> MQTT
+    Routes --> DB
+    Routes --> SEC
+    Routes --> RL
+    MQTT --> WS
+    MQTT --> CODEC
+
+    style MAIN fill:#009688,color:#fff
+    style DB fill:#336791,color:#fff
+    style WS fill:#4CAF50,color:#fff
+    style MQTT fill:#3C1053,color:#fff
+    style SEC fill:#F44336,color:#fff
+    style CODEC fill:#FF9800,color:#fff
+```
+
+| Composant | Responsabilité principale |
+|-----------|--------------------------|
+| `main.py` | Point d'entrée Uvicorn, enregistre les routeurs, configure le cycle de vie (MQTT au démarrage), définit l'endpoint WebSocket `/ws` |
+| `config.py` | Source unique de configuration via `os.environ.get()` — DB, MQTT, alertes, sécurité, limites |
+| `database.py` | Pool de connexions `SimpleConnectionPool` (min 2, max 10), context manager `get_conn()` |
+| `security.py` | Dependency FastAPI `verify_api_key()` — comparaison timing-safe `hmac.compare_digest`, retourne 401 |
+| `websocket.py` | `ConnectionManager` — cap configurable (`MAX_WS_CONNECTIONS`), broadcast thread-safe avec verrou asyncio |
+| `mqtt_handler.py` | Client paho-mqtt dans un thread dédié, valide les plages physiques, bridge vers la boucle asyncio |
+| `payload_codec.py` | Codec unifié — `encode_payload()`, `decode_payload()`, `decode_chirpstack_payload()`, `validate_device_id()` |
+| `audit.py` | Middleware ASGI — log méthode, path, status code et durée pour chaque requête |
+
+### 5.3.2 Diagramme de classes UML (Backend)
+
+```mermaid
+classDiagram
+    class ConnectionManager {
+        -list~WebSocket~ active_connections
+        -int _max_connections
+        -asyncio.Lock _lock
+        +connect(websocket) bool
+        +disconnect(websocket) void
+        +broadcast(message) void
+    }
+
+    class AuditMiddleware {
+        +dispatch(request, call_next) Response
+    }
+
+    class AppError {
+        -str message
+        -int status_code
+        +AppError(message, status_code)
+    }
+
+    class NotFoundError {
+        +NotFoundError(resource)
+    }
+
+    class ValidationError {
+        +ValidationError(message)
+    }
+
+    class SecurityHeadersMiddleware {
+        +dispatch(request, call_next) Response
+    }
+
+    class SimpleConnectionPool {
+        -int minconn
+        -int maxconn
+        +getconn() connection
+        +putconn(conn) void
+        +closeall() void
+    }
+
+    class Config {
+        <<module>>
+        +str APP_VERSION
+        +str DB_HOST
+        +int DB_PORT
+        +str MQTT_HOST
+        +int MQTT_PORT
+        +str MQTT_TOPIC
+        +str API_KEY
+        +float ALERT_TEMP_THRESHOLD
+        +int MAX_WS_CONNECTIONS
+        +list DEVICE_EUIS
+        +int PUBLISH_INTERVAL
+    }
+
+    class PayloadCodec {
+        <<module>>
+        +encode_payload(temp, hum) str
+        +decode_payload(data_b64) dict
+        +decode_chirpstack_payload(payload) dict
+        +extract_device_id(payload) str
+        +validate_device_id(device_id) bool
+    }
+
+    class Security {
+        <<module>>
+        +verify_api_key(api_key) void
+    }
+
+    class HealthRouter {
+        <<router>>
+        +root() dict
+        +health_check() dict
+    }
+
+    class DevicesRouter {
+        <<router>>
+        +list_devices() dict
+        +device_metrics(device_id, limit) dict
+    }
+
+    class AlertsRouter {
+        <<router>>
+        +get_alerts() dict
+    }
+
+    class StatsRouter {
+        <<router>>
+        +global_stats() dict
+    }
+
+    NotFoundError --|> AppError
+    ValidationError --|> AppError
+
+    HealthRouter --> SimpleConnectionPool : get_conn()
+    DevicesRouter --> SimpleConnectionPool : get_conn()
+    DevicesRouter --> Security : verify_api_key
+    DevicesRouter --> PayloadCodec : validate_device_id
+    AlertsRouter --> SimpleConnectionPool : get_conn()
+    AlertsRouter --> Security : verify_api_key
+    StatsRouter --> SimpleConnectionPool : get_conn()
+    StatsRouter --> Security : verify_api_key
+    ConnectionManager --> Config : MAX_WS_CONNECTIONS
+```
+
 ---
 
 ## 5.4 Modules Routes
@@ -270,3 +504,58 @@ def on_message(client, userdata, msg):
 | `subscriber.py` | `database.py` | Import Python — INSERT des mesures |
 | `mqtt_handler.py` | `app/websocket.py` | Import Python — appel à `broadcast()` via bridge asyncio |
 | `mqtt_handler.py` | `debug_buffer.py` | Import Python — écrit les messages MQTT bruts dans le buffer |
+
+---
+
+## 5.7 Modèle Logique de Données (MERISE MLD)
+
+Le MLD traduit le MCD en structure relationnelle avec les clés primaires, clés étrangères et types de données.
+
+### Schéma relationnel
+
+```text
+mesures (
+    id          SERIAL       PRIMARY KEY,
+    device_id   VARCHAR(64)  NOT NULL,
+    temperature NUMERIC(5,2),
+    humidite    NUMERIC(5,2),
+    recu_le     TIMESTAMP    DEFAULT NOW()
+)
+```
+
+```mermaid
+erDiagram
+    mesures {
+        int id PK "SERIAL"
+        varchar device_id "VARCHAR(64) NOT NULL"
+        numeric temperature "NUMERIC(5,2)"
+        numeric humidite "NUMERIC(5,2)"
+        timestamp recu_le "DEFAULT NOW()"
+    }
+```
+
+### Règles de passage MCD → MLD
+
+| Règle | Application |
+|-------|-------------|
+| Entité → Table | MESURE → `mesures` |
+| Identifiant → Clé primaire | `id` SERIAL PRIMARY KEY |
+| Association 1,N | `device_id` comme attribut dans `mesures` (pas de table CAPTEUR séparée) |
+| Attributs → Colonnes | Typage adapté à PostgreSQL |
+
+### Dépendances fonctionnelles
+
+```text
+id → device_id, temperature, humidite, recu_le
+```
+
+- La table est en **3ème Forme Normale (3FN)** : chaque attribut non-clé dépend uniquement de la clé primaire.
+- `device_id` n'est pas une clé étrangère vers une table `capteurs` (choix de simplification documenté dans le MCD).
+
+### Index
+
+| Nom | Colonnes | Justification |
+|-----|----------|---------------|
+| `idx_mesures_device_id` | `device_id` | Filtrage par capteur (`GET /devices/{id}/metrics`) |
+| `idx_mesures_recu_le` | `recu_le DESC` | Requêtes time-series, tri chronologique |
+| `idx_mesures_device_time` | `device_id, recu_le DESC` | Index composite pour les requêtes historiques par capteur |

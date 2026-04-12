@@ -215,3 +215,8 @@ Pourquoi hex ? **Compact et lisible** pour les identifiants longs.
 3. Binaire = représentation interne CPU
 4. Python : `int(x, base)`, `hex()`, `bin()`, `oct()`, `.fromhex()`, `.hex()`
 5. LoRaWAN = big-endian (hex left-to-right = high byte first)
+
+!!! tip "Appliquer dans ExploreIOT"
+    - Les DevEUI des capteurs sont des identifiants hexadécimaux (ex: `0102030405060708`)
+    - Le payload binaire utilise la représentation en base 2 pour encoder température et humidité
+    - Voir le [journal — Encodage LoRaWAN](../journal/lorawan-encoding.md) pour l'application concrète

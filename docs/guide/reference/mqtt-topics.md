@@ -2,6 +2,9 @@
 
 Référence complète de la structure des topics MQTT et du format des messages utilisés par ExploreIOT pour la communication entre les capteurs LoRaWAN et le backend.
 
+!!! tip "Voir aussi"
+    Pour comprendre le pattern pub/sub et l'architecture MQTT du projet, voir [Architecture MQTT](../explications/mqtt-architecture.md).
+
 ---
 
 ## Structure des topics
@@ -197,61 +200,3 @@ Exemples :
 - `0016c001f1500812`
 - `deadbeefcafe0042`
 
----
-
-## Support TLS
-
-MQTT peut être configuré avec chiffrement TLS pour sécuriser la communication entre les clients et le broker.
-
-### Activation TLS
-
-Pour activer TLS, réglez la variable d'environnement :
-
-```dotenv
-MQTT_TLS=true
-```
-
-### Certificat CA
-
-Fournissez le chemin vers le fichier CA (Certificate Authority) contenant le certificat racine du broker :
-
-```dotenv
-MQTT_CA_CERTS=/path/to/ca.crt
-```
-
-Le fichier CA est utilisé pour vérifier le certificat TLS du broker Mosquitto et empêcher les attaques man-in-the-middle.
-
----
-
-## Sécurité des threads
-
-La communication MQTT dans ExploreIOT doit être thread-safe pour éviter les races conditions lors de la manipulation d'état partagé en callbacks asynchrones.
-
-### mqtt_handler.py
-
-Le module `mqtt_handler.py` utilise un `threading.Lock()` pour protéger les structures de données partagées lors du traitement des messages MQTT dans les callbacks :
-
-```python
-self.lock = threading.Lock()
-
-def on_message(self, client, userdata, msg):
-    with self.lock:
-        # Opérations sur l'état partagé (dictionnaires, listes, etc.)
-        self.messages.append(decoded_message)
-```
-
-### subscriber.py
-
-Le script `subscriber.py` utilise également `threading.Lock()` pour synchroniser l'accès à la base de données lors de l'insertion de mesures provenant de plusieurs capteurs en parallèle :
-
-```python
-db_lock = threading.Lock()
-
-def on_message(client, userdata, msg):
-    with db_lock:
-        # Insertion PostgreSQL protégée
-        cursor.execute("INSERT INTO mesures ...")
-        conn.commit()
-```
-
-Ces locks sont essentiels car Paho MQTT appelle les callbacks `on_message` depuis un thread distinct du thread principal, et la base de données PostgreSQL n'est pas thread-safe par défaut en mode multi-thread sans connexions séparées.

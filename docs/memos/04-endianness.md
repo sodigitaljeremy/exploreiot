@@ -394,3 +394,8 @@ temp = temp_raw / 100
 6. **Mismatch** → valeurs aberrantes (−65 dBm devient 47000+)
 7. **struct.pack('>HH', ...)** = big-endian 2 uint16
 8. **struct.unpack('>HH', ...)** = doit être identique au pack
+
+!!! tip "Appliquer dans ExploreIOT"
+    - Le format `>` dans `struct.pack('>HH')` spécifie big-endian (convention réseau)
+    - LoRaWAN utilise big-endian pour les payloads applicatifs
+    - Voir le [journal — Encodage LoRaWAN](../journal/lorawan-encoding.md) pour l'implémentation

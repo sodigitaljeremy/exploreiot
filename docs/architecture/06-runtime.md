@@ -10,28 +10,41 @@ Ce diagramme représente le flux nominal complet : une mesure générée par le 
 
 ```mermaid
 sequenceDiagram
-    participant P as Publisher
-    participant M as Mosquitto
-    participant S as Subscriber
+    participant PUB as Publisher
+    participant CODEC as payload_codec
+    participant MQ as Mosquitto
+    participant SUB as Subscriber
     participant DB as PostgreSQL
-    participant A as FastAPI
-    participant WS as WebSocket
+    participant MQTT_H as mqtt_handler
+    participant WS as ConnectionManager
     participant UI as Dashboard
 
-    P->>P: generer_mesure()
-    P->>P: struct.pack('>HH', temp*100, hum*10)
-    P->>P: base64.b64encode()
-    P->>M: PUBLISH application/{app_id}/device/{id}/event/up
-    M->>S: MESSAGE callback
-    S->>S: base64.b64decode()
-    S->>S: struct.unpack('>HH')
-    S->>S: validate_sensor_reading()
-    S->>DB: INSERT INTO mesures
-    S->>A: asyncio.run_coroutine_threadsafe()
-    A->>WS: broadcast(new_mesure)
-    WS->>UI: JSON message
-    UI->>UI: Update chart + stats
+    PUB->>PUB: generer_mesure(device_id)
+    PUB->>CODEC: encode_payload(temp, hum)
+    CODEC-->>PUB: base64 string
+    PUB->>PUB: Build Chirpstack v4 JSON
+    PUB->>MQ: PUBLISH application/{app_id}/device/{id}/event/up
+
+    MQ->>SUB: on_message callback
+    SUB->>CODEC: decode_chirpstack_payload(payload)
+    CODEC-->>SUB: {device_id, temperature, humidite}
+    SUB->>DB: INSERT INTO mesures
+
+    MQ->>MQTT_H: on_message callback
+    MQTT_H->>CODEC: decode_chirpstack_payload(payload)
+    MQTT_H->>MQTT_H: validate_sensor_reading()
+    MQTT_H->>MQTT_H: asyncio.run_coroutine_threadsafe()
+    MQTT_H->>WS: broadcast({type: new_mesure, ...})
+    WS->>UI: JSON via WebSocket
+
+    UI->>UI: setMetrics(), setStats()
+    UI->>UI: Re-render chart + cards
 ```
+
+!!! info "Points clés du pipeline"
+    1. **Double consommateur** : Le subscriber (worker autonome) et le mqtt_handler (intégré à FastAPI) écoutent tous deux le broker MQTT
+    2. **Bridge asyncio** : Le callback MQTT s'exécute dans un thread paho-mqtt. `asyncio.run_coroutine_threadsafe()` permet d'appeler `broadcast()` dans la boucle asyncio de FastAPI
+    3. **Latence** : De l'étape PUBLISH à l'affichage dans le dashboard, la latence totale est < 500 ms en conditions normales
 
 ### Explication étape par étape
 
@@ -256,3 +269,113 @@ Affiche les trames brutes des trois protocoles de communication :
 - **Onglet HTTP** — Requêtes/réponses REST (GET /stats, /devices, /alerts)
 
 En mode Mock, les données sont dérivées des messages du pipeline pour fonctionner sans backend.
+
+---
+
+## 6.5 Chargement du Dashboard
+
+Du chargement initial à la réception des données en temps réel, avec fallback automatique.
+
+```mermaid
+sequenceDiagram
+    participant USER as Navigateur
+    participant APP as App (shell)
+    participant DP as DataProvider
+    participant API as FastAPI
+    participant WS as WebSocket
+    participant MOCK as mock-store
+
+    USER->>APP: Ouvre http://localhost:3000
+    APP->>DP: useDataSource()
+
+    alt Mode Mock (défaut)
+        DP->>MOCK: getStats(), getDeviceStats()
+        MOCK-->>DP: Données simulées
+        DP-->>APP: stats, devices, metrics
+        loop Toutes les 5s
+            DP->>MOCK: addMesure() + refresh
+            MOCK-->>DP: Nouvelle mesure
+        end
+    else Mode API
+        DP->>API: fetchStats(), fetchDevices()
+        API-->>DP: JSON responses
+
+        DP->>WS: new WebSocket(ws://localhost:8000/ws)
+        WS-->>DP: onopen → wsConnected = true
+
+        alt WebSocket connecté
+            loop Réception temps réel
+                WS-->>DP: {type: "new_mesure", ...}
+                DP-->>APP: setLatestMesure()
+            end
+        else WebSocket déconnecté (fallback)
+            loop Polling toutes les 10s
+                DP->>API: fetchStats(), fetchDevices()
+                API-->>DP: JSON responses
+            end
+            DP->>WS: Reconnexion (backoff exponentiel 1s → 30s)
+        end
+    end
+
+    alt API injoignable
+        DP->>DP: addToast("warning", "API injoignable")
+        DP->>DP: setMode("mock") — basculement automatique
+    end
+```
+
+### Modes de fonctionnement
+
+| Mode | Source | Intervalle | Latence |
+|------|--------|-----------|---------|
+| **Mock** | `mock-store.ts` (local) | 5s (polling simulé) | ~0 ms |
+| **API + WebSocket** | FastAPI + WS push | Temps réel | < 500 ms |
+| **API + Polling** | FastAPI REST | 10s (fallback) | ~100 ms |
+| **Fallback auto** | Mock (après erreur API) | 5s | ~0 ms |
+
+---
+
+## 6.6 Détection des alertes
+
+Logique de détection des deux types d'alertes dans `routes/alerts.py`.
+
+```mermaid
+flowchart TD
+    START([GET /alerts]) --> QUERY_DEVICES[Requête SQL :<br/>SELECT DISTINCT device_id<br/>FROM mesures 24h]
+    QUERY_DEVICES --> LOOP{Pour chaque<br/>device_id}
+
+    LOOP --> CHECK_TEMP[Requête SQL :<br/>Dernière mesure<br/>du capteur]
+    CHECK_TEMP --> TEMP_HIGH{temperature ><br/>ALERT_TEMP_THRESHOLD ?}
+
+    TEMP_HIGH -->|Oui| ADD_TEMP_ALERT[Ajouter alerte<br/>TEMPERATURE_ELEVEE]
+    TEMP_HIGH -->|Non| CHECK_SILENCE
+
+    ADD_TEMP_ALERT --> CHECK_SILENCE
+
+    CHECK_SILENCE --> SILENCE{Dernière mesure ><br/>ALERT_SILENCE_MINUTES<br/>dans le passé ?}
+
+    SILENCE -->|Oui| ADD_SILENCE_ALERT[Ajouter alerte<br/>CAPTEUR_SILENCIEUX]
+    SILENCE -->|Non| NEXT_DEVICE
+
+    ADD_SILENCE_ALERT --> NEXT_DEVICE
+
+    NEXT_DEVICE --> LOOP
+    LOOP -->|Tous traités| RESPONSE[Retourner JSON :<br/>nb_alertes + alertes[]]
+
+    style START fill:#4CAF50,color:#fff
+    style RESPONSE fill:#2196F3,color:#fff
+    style ADD_TEMP_ALERT fill:#F44336,color:#fff
+    style ADD_SILENCE_ALERT fill:#FF9800,color:#fff
+```
+
+### Types d'alertes
+
+| Type | Condition | Seuil configurable |
+|------|-----------|-------------------|
+| `TEMPERATURE_ELEVEE` | `temperature > ALERT_TEMP_THRESHOLD` | `ALERT_TEMP_THRESHOLD` (défaut : 33°C) |
+| `CAPTEUR_SILENCIEUX` | `NOW() - derniere_mesure > ALERT_SILENCE_MINUTES` | `ALERT_SILENCE_MINUTES` (défaut : 10 min) |
+
+### Caractéristiques
+
+- Les alertes sont **calculées dynamiquement** à chaque appel `GET /alerts` — pas de table persistante
+- Les seuils sont configurables via variables d'environnement
+- Un même capteur peut déclencher les deux types d'alertes simultanément

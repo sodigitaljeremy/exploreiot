@@ -166,3 +166,7 @@ Sans `closeall()`, les connexions restent ouvertes cote PostgreSQL jusqu'au time
 - [psycopg2 — Connection Pool](https://www.psycopg.org/docs/pool.html)
 - [PostgreSQL — Connection and Authentication](https://www.postgresql.org/docs/current/runtime-config-connection.html)
 - [PgBouncer — pooler de connexions dedie pour la production](https://www.pgbouncer.org/)
+
+!!! tip "Pour aller plus loin"
+    - [Memo 08 — SQL fondamentaux](../memos/08-sql-fondamentaux.md) : SELECT, INSERT, INDEX, transactions
+    - [Référence — Schéma DB](../guide/reference/schema-db.md) : Tables, index, volumétrie
