@@ -1,0 +1,38 @@
+# Chirpstack v4 configuration for ExploreIOT
+# This file configures the Chirpstack network server to work with our
+# Docker Compose setup (PostgreSQL, Redis, Mosquitto).
+
+[logging]
+  level = "info"
+
+[postgresql]
+  dsn = "postgres://exploreiot:change_me_in_production@postgres/chirpstack?sslmode=disable"
+  max_open_connections = 10
+  min_idle_connections = 5
+
+[redis]
+  servers = ["redis://redis/"]
+  tls_enabled = false
+  cluster = false
+
+[network]
+  net_id = "000000"
+  enabled_regions = ["eu868"]
+
+[monitoring]
+  bind = ""
+
+[api]
+  bind = "0.0.0.0:8080"
+  secret = "you-must-replace-this-secret-in-production"
+
+[integration]
+  enabled = ["mqtt"]
+
+  [integration.mqtt]
+    server = "tcp://mosquitto:1883"
+    username = "exploreiot"
+    password = "exploreiot_mqtt"
+    json = true
+    event_topic = "application/{{application_id}}/device/{{dev_eui}}/event/{{event}}"
+    command_topic = "application/{{application_id}}/device/{{dev_eui}}/command/{{command}}"

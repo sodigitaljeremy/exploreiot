@@ -1,0 +1,7 @@
+{
+  "devices": [
+    { "id": "a1b2c3d4e5f60001", "name": "Capteur Salle Serveurs" },
+    { "id": "a1b2c3d4e5f60002", "name": "Capteur Entrepôt Nord" },
+    { "id": "a1b2c3d4e5f60003", "name": "Capteur Extérieur Toit" }
+  ]
+}

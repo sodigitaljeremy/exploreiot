@@ -1,0 +1,21 @@
+# EU868 region configuration for Chirpstack v4
+# This configures the LoRaWAN parameters for the European 868 MHz band.
+
+[[regions]]
+
+  [regions.network]
+    name = "eu868"
+    common_name = "EU868"
+
+  [regions.gateway]
+
+    [regions.gateway.backend]
+      enabled = "mqtt"
+
+      [regions.gateway.backend.mqtt]
+        event_topic = "eu868/gateway/+/event/+"
+        command_topic = "eu868/gateway/{{ gateway_id }}/command/{{ command }}"
+        server = "tcp://mosquitto:1883"
+        username = "exploreiot"
+        password = "exploreiot_mqtt"
+        clean_session = false

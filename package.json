@@ -1,0 +1,39 @@
+{
+  "name": "exploreiot-dashboard-ui",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "lint:md": "markdownlint-cli2 'docs/**/*.md' 'README.md'",
+    "marp:build": "marp --input-dir docs/memos --output docs/memos/output --html",
+    "marp:preview": "marp --input-dir docs/memos --output docs/memos/output --html --watch --server",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "fullstack": "docker compose up --build"
+  },
+  "dependencies": {
+    "@next/swc-linux-x64-gnu": "^16.2.3",
+    "next": "16.2.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "recharts": "^3.8.1"
+  },
+  "devDependencies": {
+    "@marp-team/marp-cli": "^4.3.1",
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.3",
+    "jsdom": "^29.0.2",
+    "markdownlint-cli2": "^0.22.0",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^4.1.4"
+  }
+}

@@ -1,0 +1,5 @@
+node_modules/
+site/
+.next/
+backend/venv/
+docs/memos/output/

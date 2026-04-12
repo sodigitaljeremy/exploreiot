@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.git/
+.github/
+backend/
+docker/
+.env
+.env.*
+*.md
+.claude/

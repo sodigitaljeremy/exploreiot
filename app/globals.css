@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateX(1rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out both;
+}
+
+@keyframes value-update {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.animate-value-update {
+  animation: value-update 0.4s ease-out;
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-live-pulse {
+  animation: live-pulse 2s ease-in-out infinite;
+}
+
+@keyframes packet-traverse {
+  0% { left: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+.animate-packet-traverse {
+  animation: packet-traverse 2s ease-in-out forwards;
+}
+
+@keyframes node-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 currentColor; }
+  50% { box-shadow: 0 0 0 8px transparent; }
+}
+
+.animate-node-pulse {
+  animation: node-pulse 1s ease-out;
+}
+
+@keyframes progress-fill {
+  from { width: 0%; }
+  to { width: var(--progress); }
+}
+
+.animate-progress-fill {
+  animation: progress-fill 0.4s ease-out forwards;
+}
+
+/* ─── Light theme overrides ─────────────────────────── */
+html.light {
+  color-scheme: light;
+}
+
+html.light .bg-gray-950 {
+  background-color: #f8fafc !important;
+}
+
+html.light .bg-gray-900 {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-gray-800 {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .text-white {
+  color: #0f172a !important;
+}
+
+html.light .text-gray-500 {
+  color: #64748b !important;
+}
+
+html.light .text-gray-400 {
+  color: #475569 !important;
+}
+
+html.light .text-gray-300 {
+  color: #334155 !important;
+}
+
+html.light .text-gray-600 {
+  color: #64748b !important;
+}
+
+html.light .border-gray-800 {
+  border-color: #e2e8f0 !important;
+}
+
+html.light .border-gray-700 {
+  border-color: #cbd5e1 !important;
+}
+
+html.light .placeholder-gray-600::placeholder {
+  color: #94a3b8 !important;
+}
+
+html.light .border-b.border-gray-800 {
+  border-bottom-color: #e2e8f0 !important;
+}

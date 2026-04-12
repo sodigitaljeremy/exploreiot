@@ -1,0 +1,121 @@
+site_name: ExploreIOT Dashboard
+site_description: Documentation technique du dashboard IoT LoRaWAN temps réel
+site_author: Étudiant
+repo_url: https://github.com/exploreiot/dashboard
+repo_name: exploreiot/dashboard
+use_directory_urls: false
+
+theme:
+  name: material
+  language: fr
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Mode clair
+    - scheme: default
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Mode sombre
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+nav:
+  - Accueil: index.md
+  - Architecture:
+    - Introduction: architecture/01-introduction.md
+    - Contraintes: architecture/02-contraintes.md
+    - Contexte: architecture/03-contexte.md
+    - Stratégie: architecture/04-strategie.md
+    - Blocs fonctionnels: architecture/05-blocs.md
+    - Vue runtime: architecture/06-runtime.md
+    - Déploiement: architecture/07-deploiement.md
+    - Concepts transversaux: architecture/08-concepts.md
+    - Décisions: architecture/09-decisions.md
+    - Risques: architecture/10-risques.md
+    - Glossaire: architecture/11-glossaire.md
+    - Diagrammes:
+      - C4 Contexte: architecture/diagrams/c4-context.md
+      - C4 Conteneurs: architecture/diagrams/c4-container.md
+      - C4 Composants: architecture/diagrams/c4-component.md
+      - MERISE MCD: architecture/diagrams/merise-mcd.md
+      - MERISE MLD: architecture/diagrams/merise-mld.md
+      - MERISE MPD: architecture/diagrams/merise-mpd.md
+      - UML Classes Backend: architecture/diagrams/uml-class-backend.md
+      - UML Séquence MQTT: architecture/diagrams/uml-sequence-mqtt.md
+      - UML Séquence Dashboard: architecture/diagrams/uml-sequence-dashboard.md
+      - UML Activité Alertes: architecture/diagrams/uml-activity-alert.md
+  - Guide utilisateur:
+    - Tutoriels:
+      - Démarrage rapide: guide/tutoriels/demarrage-rapide.md
+    - How-to:
+      - Déployer avec Docker: guide/how-to/deployer-docker.md
+      - Ajouter un capteur: guide/how-to/ajouter-capteur.md
+      - Configurer les alertes: guide/how-to/configurer-alertes.md
+      - Exporter les données: guide/how-to/exporter-donnees.md
+      - Troubleshooting: guide/how-to/troubleshooting.md
+    - Référence:
+      - API endpoints: guide/reference/api-endpoints.md
+      - Variables d'environnement: guide/reference/env-variables.md
+      - Topics MQTT: guide/reference/mqtt-topics.md
+      - Schéma base de données: guide/reference/schema-db.md
+      - Codec LoRaWAN: guide/reference/payload-codec.md
+      - Carte des composants: guide/reference/component-map.md
+    - Explications:
+      - Pipeline LoRaWAN: guide/explications/lorawan-pipeline.md
+      - Sécurité: guide/explications/securite.md
+      - Architecture MQTT: guide/explications/mqtt-architecture.md
+      - Encodage binaire: guide/explications/encodage-binaire.md
+      - Audit logging: guide/explications/audit-logging.md
+  - Journal d'apprentissage:
+    - Vue d'ensemble: journal/index.md
+    - Encodage LoRaWAN: journal/lorawan-encoding.md
+    - Patterns MQTT: journal/mqtt-patterns.md
+    - Attaques timing: journal/timing-attacks.md
+    - Connection pooling: journal/connection-pooling.md
+    - WebSocket reconnection: journal/websocket-reconnection.md
+    - Docker multi-stage: journal/docker-multistage.md
+    - Principes SOLID: journal/solid-principles.md
+    - Stratégie migrations: journal/migrations-strategy.md
+    - Intégration Chirpstack: journal/chirpstack-integration.md
+  - Memos CS:
+    - Vue d'ensemble: memos/index.md
+    - Systèmes de numération: memos/01-systemes-numeration.md
+    - Représentation des données: memos/02-representation-donnees.md
+    - Encodage: memos/03-encodage.md
+    - Endianness: memos/04-endianness.md
+    - Réseaux fondamentaux: memos/05-reseaux-fondamentaux.md
+    - Architecture client-serveur: memos/06-architecture-client-serveur.md
+    - Protocole WebSocket: memos/07-protocole-websocket.md
+    - SQL fondamentaux: memos/08-sql-fondamentaux.md
