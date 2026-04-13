@@ -103,7 +103,12 @@ export async function fetchDevices(): Promise<DeviceStats[]> {
 export async function fetchHistory(deviceId: string, limit = 20, since?: string): Promise<Mesure[]> {
   let path = `/devices/${encodeURIComponent(deviceId)}/metrics?limit=${limit}`
   if (since) path += `&since=${since}`
-  const data = await apiFetch<{ mesures: Mesure[] }>(path)
+  const headers: Record<string, string> = {}
+  if (API_KEY) headers["X-API-Key"] = API_KEY
+  const res = await fetch(`${API_URL}${path}`, { headers })
+  if (res.status === 404) return [] // device inconnu en API → pas de crash
+  if (!res.ok) throw new Error(`API ${path}: ${res.status}`)
+  const data: { mesures: Mesure[] } = await res.json()
   // L'API retourne DESC, on veut ASC pour le graphique
   return data.mesures.reverse()
 }
