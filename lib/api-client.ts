@@ -69,7 +69,7 @@ export interface WsDebugMqtt {
 
 export type WsMessage = WsNewMesure | WsDebugMqtt | { type: "pong" }
 
-export const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000/ws"
+export const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8002/ws"
 
 // ─── Noms des devices (l'API ne les retourne pas) ────────
 

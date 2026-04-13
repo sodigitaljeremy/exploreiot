@@ -26,7 +26,7 @@ export default function InspectorHttpTab() {
       for (const entry of list.getEntries()) {
         const resource = entry as PerformanceResourceTiming
         if (resource.initiatorType !== "fetch" && resource.initiatorType !== "xmlhttprequest") continue
-        if (!resource.name.includes("localhost:8000") && !resource.name.includes("/api")) continue
+        if (!resource.name.includes("/api") && !resource.name.includes("/health") && !resource.name.includes("/devices") && !resource.name.includes("/stats") && !resource.name.includes("/alerts")) continue
 
         try {
           setRealEntries(prev => [{

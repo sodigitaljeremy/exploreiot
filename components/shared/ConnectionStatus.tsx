@@ -94,8 +94,7 @@ export default function ConnectionStatus() {
         <div className="px-4 pb-4">
           {error ? (
             <div className="bg-red-950/30 border border-red-900 rounded-lg p-3 text-xs text-red-400">
-              Impossible de joindre l&apos;API sur localhost:8000.
-              Lancez <code className="bg-red-950 px-1 rounded">./demo.sh</code> pour demarrer le backend.
+              Impossible de joindre l&apos;API. Lancez <code className="bg-red-950 px-1 rounded">./demo.sh</code> pour demarrer le backend.
             </div>
           ) : status ? (
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">

@@ -40,8 +40,8 @@ cp .env.example .env
 | `ALERT_SILENCE_MINUTES` | `10` | Durée en minutes sans mesure avant alerte capteur silencieux |
 | `MAX_WS_CONNECTIONS` | `50` | Nombre maximum de connexions WebSocket simultanées |
 | `RATE_LIMIT_DEFAULT` | `30/minute` | Limite de requêtes par défaut (format slowapi) |
-| `NEXT_PUBLIC_API_URL` | `http://localhost:8000` | URL de l'API REST, exposée au navigateur |
-| `NEXT_PUBLIC_WS_URL` | `ws://localhost:8000/ws` | URL WebSocket, exposée au navigateur |
+| `NEXT_PUBLIC_API_URL` | `http://localhost:8002` | URL de l'API REST, exposée au navigateur |
+| `NEXT_PUBLIC_WS_URL` | `ws://localhost:8002/ws` | URL WebSocket, exposée au navigateur |
 | `CHIRPSTACK_ENABLED` | `false` | Active le mode Chirpstack v4 (avec profil Docker) |
 | `CHIRPSTACK_API_URL` | `localhost:8080` | URL de l'API gRPC Chirpstack |
 | `CHIRPSTACK_API_KEY` | *(vide)* | Clé d'API Chirpstack pour le provisionnement |
@@ -80,8 +80,8 @@ MAX_WS_CONNECTIONS=50
 RATE_LIMIT_DEFAULT=30/minute
 
 # Frontend (variables NEXT_PUBLIC_ exposées côté navigateur)
-NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_WS_URL=ws://localhost:8000/ws
+NEXT_PUBLIC_API_URL=http://localhost:8002
+NEXT_PUBLIC_WS_URL=ws://localhost:8002/ws
 ```
 
 > **Note** : Dans `docker-compose.yml`, le `DB_HOST` doit être `postgres` (nom du service Docker) et non `localhost`.
