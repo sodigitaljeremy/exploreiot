@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import type { DataMode } from "@/lib/types"
-import { checkApiHealth } from "@/lib/api-client"
+import { checkApiHealth, getApiUrl } from "@/lib/api-client"
 import { useDataSource } from "@/lib/data-provider"
 
 export default function DataModeToggle({ mode, setMode }: { mode: DataMode; setMode: (m: DataMode) => void }) {
@@ -17,10 +17,10 @@ export default function DataModeToggle({ mode, setMode }: { mode: DataMode; setM
       if (ok) {
         setMode("api")
       } else {
-        addToast("warning", "API injoignable sur localhost:8000 — lancez ./demo.sh pour demarrer le backend")
+        addToast("warning", `API injoignable sur ${getApiUrl()}`)
       }
     } catch {
-      addToast("warning", "API injoignable sur localhost:8000 — lancez ./demo.sh pour demarrer le backend")
+      addToast("warning", `API injoignable sur ${getApiUrl()}`)
     } finally {
       setChecking(false)
     }

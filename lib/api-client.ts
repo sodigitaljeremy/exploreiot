@@ -6,8 +6,10 @@
 
 import type { Alerte } from "./mock-store"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8002"
 export const API_KEY = process.env.NEXT_PUBLIC_API_KEY || ""
+
+export function getApiUrl(): string { return API_URL }
 
 // ─── Types partagés ──────────────────────────────────────
 
