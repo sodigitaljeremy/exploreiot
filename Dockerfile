@@ -12,8 +12,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ARG NEXT_PUBLIC_API_URL=http://localhost:8000
-ARG NEXT_PUBLIC_WS_URL=ws://localhost:8000/ws
+ARG NEXT_PUBLIC_API_URL=http://localhost:8002
+ARG NEXT_PUBLIC_WS_URL=ws://localhost:8002/ws
 ARG NEXT_PUBLIC_API_KEY=
 
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
@@ -27,6 +27,12 @@ RUN npm run build
 FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
+
+# CSP headers in next.config.ts need these at runtime
+ARG NEXT_PUBLIC_API_URL=http://localhost:8002
+ARG NEXT_PUBLIC_WS_URL=ws://localhost:8002/ws
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_WS_URL=$NEXT_PUBLIC_WS_URL
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs

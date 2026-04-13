@@ -1,8 +1,8 @@
 site_name: ExploreIOT Dashboard
 site_description: Documentation technique du dashboard IoT LoRaWAN temps réel
 site_author: Étudiant
-repo_url: https://github.com/exploreiot/dashboard
-repo_name: exploreiot/dashboard
+repo_url: https://github.com/sodigitaljeremy/exploreiot
+repo_name: sodigitaljeremy/exploreiot
 use_directory_urls: false
 
 theme:
