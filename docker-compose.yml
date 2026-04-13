@@ -132,7 +132,6 @@ services:
 
   publisher:
     build: ./backend
-    profiles: ["demo"]
     command: ["python", "publisher.py"]
     volumes:
       - ./shared:/shared:ro
